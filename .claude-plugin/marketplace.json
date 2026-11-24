@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "claude-karen",
+  "description": "Complain like someone who read the terms and kept the receipts",
+  "owner": { "name": "NathnC" },
+  "plugins": [
+    {
+      "name": "karen",
+      "description": "/karen drafts firm, factual complaints backed by verified law and real escalation contacts, and tracks each case's deadlines.",
+      "source": "./",
+      "category": "productivity"
+    }
+  ]
+}

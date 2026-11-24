@@ -1,0 +1,11 @@
+{
+  "name": "karen",
+  "description": "/karen turns a bad experience into a calm, well-evidenced complaint: honest merit check, verified law, real escalation contacts, drafted email and a tracked case with deadlines.",
+  "version": "0.1.0",
+  "author": { "name": "NathnC" },
+  "license": "MIT",
+  "repository": "https://github.com/NathnC/claude-karen",
+  "homepage": "https://github.com/NathnC/claude-karen#readme",
+  "keywords": ["complaints", "consumer-rights", "letters", "uk", "escalation"],
+  "types": "./types/index.d.ts"
+}
