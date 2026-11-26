@@ -1,11 +1,27 @@
 {
   "name": "karen",
   "description": "/karen turns a bad experience into a calm, well-evidenced complaint: honest merit check, verified law, real escalation contacts, drafted email and a tracked case with deadlines.",
-  "version": "0.1.0",
-  "author": { "name": "NathnC" },
+  "version": "0.1.1",
+  "author": {
+    "name": "NathnC"
+  },
   "license": "MIT",
   "repository": "https://github.com/NathnC/claude-karen",
   "homepage": "https://github.com/NathnC/claude-karen#readme",
-  "keywords": ["complaints", "consumer-rights", "letters", "uk", "escalation"],
-  "types": "./types/index.d.ts"
+  "keywords": [
+    "complaints",
+    "consumer-rights",
+    "letters",
+    "uk",
+    "escalation"
+  ],
+  "types": "./types/index.d.ts",
+  "userConfig": {
+    "reminders": {
+      "type": "boolean",
+      "title": "Deadline reminders",
+      "description": "Outside Karen mode, show a status line and a startup toast when a case deadline is due or past. Off by default: Karen stays silent until you run /karen.",
+      "default": false
+    }
+  }
 }
