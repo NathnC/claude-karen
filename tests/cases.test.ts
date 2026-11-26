@@ -39,11 +39,12 @@ test('dueCases keeps open, dated cases within two days, overdue first', () => {
   expect(dueCases(CASES, '2026-11-24').map(c => [c.folder, c.days])).toEqual([['b', -4], ['a', 2]])
 })
 
-test('statusText: always on in Karen mode, otherwise only when something is due', () => {
+test('statusText: shown in Karen mode; when off, only with reminders on and something due', () => {
   const s = summarize(CASES, '2026-11-24')
   expect(s).toEqual(expect.objectContaining({ open: 5, overdue: 1, soon: 1 }))
   expect(statusText(true, s)).toBe('💅 KAREN MODE · 5 open · 1 overdue · 1 due soon')
-  expect(statusText(false, s)).toBe('💅 Karen · 1 overdue · 1 due soon · /karen list')
+  expect(statusText(false, s)).toBeUndefined()
+  expect(statusText(false, s, true)).toBe('💅 Karen · 1 overdue · 1 due soon · /karen list')
   const quiet = summarize([{ folder: 'd', status: 'open', next_deadline: '2026-12-10' }], '2026-11-24')
   expect(statusText(true, quiet)).toBe('💅 KAREN MODE · 1 open')
   expect(statusText(false, quiet)).toBeUndefined()

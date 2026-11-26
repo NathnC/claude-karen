@@ -33,18 +33,27 @@ async function loadCases($: EngineInterface): Promise<CaseInfo[]> {
   return cases
 }
 
-async function refresh($: EngineInterface, announce = false) {
+// Mode off and reminders off: clear the line without touching the case store.
+async function refresh($: EngineInterface, reminders: boolean, announce = false) {
+  const on = await read($, onAtom)
+  if (!on && !reminders) {
+    $.ui.status(undefined)
+    return
+  }
   const summary = summarize(await loadCases($), localDate(new Date()))
-  $.ui.status(statusText(await read($, onAtom), summary))
-  if (announce && summary.due.length) {
+  $.ui.status(statusText(on, summary, reminders))
+  if (announce && reminders && summary.due.length) {
     $.ui.toast(`Karen: ${summary.due.map(describe).join('; ')}`, { timeoutMs: 8000 })
   }
 }
 
-export const register: Register = on => {
+export const register: Register = (on, options) => {
+  // Off by default: unless the user turns reminders on, Karen stays silent until /karen is run.
+  const reminders = options.reminders === true
+
   on('session.start', async ($, e, next) => {
     const result = await next(e)
-    await refresh($, true).catch(() => undefined)
+    if (reminders) await refresh($, reminders, true).catch(() => undefined)
     return result
   })
 
@@ -55,7 +64,7 @@ export const register: Register = on => {
       const off = isOffArgs(e.command?.args ?? '')
       offPending = off
       await update($, onAtom, () => !off)
-      await refresh($).catch(() => undefined)
+      await refresh($, reminders).catch(() => undefined)
     }
     return next(e)
   })
@@ -67,16 +76,16 @@ export const register: Register = on => {
         offPending = false
       } else if (!(await read($, onAtom))) {
         await update($, onAtom, () => true)
-        await refresh($).catch(() => undefined)
+        await refresh($, reminders).catch(() => undefined)
       }
     }
     return next(e)
   })
 
-  // Case files change during a turn; recount after each one while the mode is on.
+  // Case files change during a turn; recount after each one while anything is shown.
   on('turn.complete', async ($, e, next) => {
     const result = await next(e)
-    if (await read($, onAtom)) await refresh($).catch(() => undefined)
+    if (reminders || (await read($, onAtom))) await refresh($, reminders).catch(() => undefined)
     return result
   })
 }

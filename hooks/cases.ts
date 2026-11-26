@@ -77,15 +77,16 @@ export function describe(c: DueCase): string {
   return `${c.title || c.folder}${c.against ? ` (${c.against})` : ''} ${when}`
 }
 
-// The status line: always shown while Karen mode is on; otherwise only when a case needs attention.
-export function statusText(on: boolean, s: Summary): string | undefined {
+// The status line: always shown while Karen mode is on. With the mode off it shows only
+// when reminders are switched on and a case needs attention; otherwise nothing at all.
+export function statusText(on: boolean, s: Summary, reminders = false): string | undefined {
   const parts = [
     s.open ? `${s.open} open` : '',
     s.overdue ? `${s.overdue} overdue` : '',
     s.soon ? `${s.soon} due soon` : '',
   ].filter(Boolean)
   if (on) return ['💅 KAREN MODE', ...parts].join(' · ')
-  if (s.overdue || s.soon) return ['💅 Karen', ...parts.slice(1), '/karen list'].join(' · ')
+  if (reminders && (s.overdue || s.soon)) return ['💅 Karen', ...parts.slice(1), '/karen list'].join(' · ')
   return undefined
 }
 

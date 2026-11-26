@@ -57,7 +57,7 @@ While Karen mode is on, the status line says so, with your case counts:
 💅 KAREN MODE · 3 open · 1 overdue
 ```
 
-With the mode off, the line only appears when a case deadline is due or past.
+With the mode off, Karen shows nothing: no status line, no startup reminder. To get deadline reminders outside Karen mode, turn on **Deadline reminders** for the karen plugin in `/config`. The status line then appears, and a toast at startup, only when a case is due or past.
 
 ## What you get
 
